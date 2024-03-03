@@ -57,10 +57,13 @@ Route::middleware(['auth:karyawan'])->group(function(){
 });
 
 Route::middleware(['auth:user'])->group(function(){
+    //Logout dan akses ke Panel Karyawan
     Route::get('/proseslogoutadmin', [AuthController::class, 'proseslogoutadmin']);
     Route::get('/panel/dashboardadmin', [DashboardController::class, 'dashboardadmin']);
 
+    //Panel Karyawan
     Route::get('/karyawan', [KaryawanController::class, 'index']);
+    Route::post('/karyawan/store', [KaryawanController::class, 'store']);
 });
 
 

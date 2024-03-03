@@ -24,6 +24,20 @@
                     <div class="card-body">
                     <div class="row">
                         <div class="col-12">
+                            @if (Session::get('success'))
+                                <div class="alert alert-success">
+                                    {{ Session::get('success') }}
+                                </div>
+                            @endif
+                            @if (Session::get('warning'))
+                                <div class="alert alert-warning">
+                                    {{ Session::get('warning') }}
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
                             <a href="#" class="btn btn-primary" id="btnTambahkaryawan">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
                                 Tambah Data
@@ -118,7 +132,8 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            <form action="#" method="POST" id="frmKaryawan">
+            <form action="/karyawan/store" method="POST" id="frmKaryawan" enctype="multipart/form-data">
+                @csrf
                 <div class="row">
                     <div class="col-12">
                         <div class="input-icon mb-3">
@@ -163,13 +178,7 @@
                           </div>
                     </div>
                 </div>
-                <div class="row mt-2">
-                    <div class="col-12">
-                        <div class="form-label">Upload Foto</div>
-                        <input type="file" class="form-control">
-                    </div>
-                </div>
-                <div class="row mt-3">
+                <div class="row">
                     <div class="col-12">
                         <select name="kode_dept" id="kode_dept" class="form-select">
                             <option value="">Departemen</option>
@@ -177,6 +186,12 @@
                                 <option {{ Request('kode_dept') == $d->kode_dept ? 'selected' : '' }} value="{{ $d->kode_dept }}">{{ $d->nama_dept }}</option>
                             @endforeach
                         </select>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <div class="form-label">Upload Foto</div>
+                        <input type="file" class="form-control" name="foto">
                     </div>
                 </div>
                 <div class="row mt-3">
@@ -203,16 +218,63 @@
             $("#modal-inputkaryawan").modal("show");
         });
 
-        $("frmKaryawan").submit(function() {
+        $("#frmKaryawan").submit(function() {
             var nik = $("#nik").val();
             var nama_lengkap = $("#nama_lengkap").val();
             var jabatan = $("#jabatan").val();
             var no_hp = $("#no_hp").val();
-            var kode_dept = $("#kode_dept").val();
+            var kode_dept = $("#frmKaryawan").find("#kode_dept").val();
 
             if(nik == "") {
-                alert("NIP/NRP Wajib Diisi");
-                $("#nik").focus();
+                // alert("NIP/NRP Wajib Diisi");
+                Swal.fire({
+                    title: 'Warning!',
+                    text: 'NIP/NRP Wajib Diisi',
+                    icon: 'warning',
+                    confirmButtonText: 'Oke, saya paham'
+                }).then((result) => {
+                    $("#nik").focus();
+                });
+                return false;
+            } else if(nama_lengkap == "") {
+                Swal.fire({
+                    title: 'Warning!',
+                    text: 'Nama Lengkap Wajib Diisi',
+                    icon: 'warning',
+                    confirmButtonText: 'Oke, saya paham'
+                }).then((result) => {
+                    $("#nama_lengkap").focus();
+                });
+                return false;
+            } else if(jabatan == "") {
+                Swal.fire({
+                    title: 'Warning!',
+                    text: 'Jabatan Wajib Diisi',
+                    icon: 'warning',
+                    confirmButtonText: 'Oke, saya paham'
+                }).then((result) => {
+                    $("#jabatan").focus();
+                });
+                return false;
+            } else if(no_hp == "") {
+                Swal.fire({
+                    title: 'Warning!',
+                    text: 'Nomor HP Wajib Diisi',
+                    icon: 'warning',
+                    confirmButtonText: 'Oke, saya paham'
+                }).then((result) => {
+                    $("#no_hp").focus();
+                });
+                return false;
+            } else if(kode_dept == "") {
+                Swal.fire({
+                    title: 'Warning!',
+                    text: 'Departemen Wajib Diisi',
+                    icon: 'warning',
+                    confirmButtonText: 'Oke, saya paham'
+                }).then((result) => {
+                    $("#kode_dept").focus();
+                });
                 return false;
             }
         });
