@@ -25,7 +25,7 @@ class KaryawanController extends Controller
         {
             $query->where('karyawan.kode_dept', $request->kode_dept);
         }
-        $karyawan = $query->paginate(1);
+        $karyawan = $query->paginate(2);
 
         $departemen = DB::table('departemen')->get();
         return view('karyawan.index', compact('karyawan', 'departemen'));
