@@ -163,7 +163,10 @@
                 <div class="dropdown-menu-column">
                   <a class="dropdown-item" href="/karyawan">
                     Data Karyawan
-                  </a> 
+                  </a>
+                  <a class="dropdown-item" href="/departemen">
+                    Data Departemen
+                  </a>
               </div>
             </div>
         </ul>

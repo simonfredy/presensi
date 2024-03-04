@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DepartemenController;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\PresensiController;
 use Illuminate\Support\Facades\Route;
@@ -35,21 +36,21 @@ Route::middleware(['guest:user'])->group(function(){
 });
 
 Route::middleware(['auth:karyawan'])->group(function(){
-    
+
     //Route Logout
     Route::get('/dashboard', [DashboardController::class, 'index']);
     Route::get('/proseslogout', [AuthController::class, 'proseslogout']);
-    
+
     //Route Presensi
     Route::get('/presensi/create', [PresensiController::class, 'create']);
     Route::post('/presensi/store', [PresensiController::class, 'store']);
-    
+
     //Route Profil
     Route::get('/editprofile', [PresensiController::class, 'editprofile']);
     Route::post('/presensi/{nik}/updateprofile', [PresensiController::class, 'updateprofile']);
     Route::get('/presensi/histori',[PresensiController::class, 'histori']);
     Route::post('/gethistori',[PresensiController::class, 'gethistori']);
-    
+
     //Route Izin
     Route::get('/presensi/izin', [PresensiController::class, 'izin']);
     Route::get('/presensi/buatizin', [PresensiController::class, 'buatizin']);
@@ -67,6 +68,11 @@ Route::middleware(['auth:user'])->group(function(){
     Route::post('/karyawan/edit', [KaryawanController::class, 'edit']);
     Route::post('/karyawan/{nik}/update', [KaryawanController::class, 'update']);
     Route::post('/karyawan/{nik}/delete', [KaryawanController::class, 'delete']);
+
+    //Panel Departemen
+    Route::get('/departemen', [DepartemenController::class, 'index']);
+    Route::post('/departemen/store', [DepartemenController::class, 'store']);
+    Route::post('/departemen/edit', [DepartemenController::class, 'edit']);
 });
 
 
