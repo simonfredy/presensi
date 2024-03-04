@@ -46,7 +46,38 @@ class DepartemenController extends Controller
     public function edit(Request $request)
     {
         $kode_dept = $request->kode_dept;
-        $departemen = DB::table('departemen')->where('kode_dept', $kode_dept);
+        $departemen = DB::table('departemen')->where('kode_dept', $kode_dept)->first();
         return view('departemen.edit', compact('departemen'));
+    }
+
+    public function update($kode_dept, Request $request)
+    {
+        $nama_dept = $request->nama_dept;
+        $data = [
+            'nama_dept' => $nama_dept
+        ];
+
+        $update = DB::table('departemen')->where('kode_dept' ,$kode_dept)->update($data);
+        if ($update)
+        {
+            return Redirect::back()->with(['success' => 'Data Berhasil Diperbarui']);
+        }
+        else
+        {
+            return Redirect::back()->with(['warning' => 'Data Gagal Diperbarui']);
+        }
+    }
+
+    public function delete($kode_dept)
+    {
+        $hapus = DB::table('departemen')->where('kode_dept', $kode_dept)->delete();
+        if ($hapus)
+        {
+            return Redirect::back()->with(['success' => 'Data Berhasil Dihapus']);
+        }
+        else
+        {
+            return Redirect::back()->with(['warning' => 'Data Gagal Dihapus']);
+        }
     }
 }
