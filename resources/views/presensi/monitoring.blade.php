@@ -26,7 +26,7 @@
                             <span class="input-icon-addon">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-month" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z" /><path d="M16 3v4" /><path d="M8 3v4" /><path d="M4 11h16" /><path d="M7 14h.013" /><path d="M10.01 14h.005" /><path d="M13.01 14h.005" /><path d="M16.015 14h.005" /><path d="M13.015 17h.005" /><path d="M7.01 17h.005" /><path d="M10.01 17h.005" /></svg>
                             </span>
-                            <input type="text" name="tanggal" id="tanggal" class="form-control" placeholder="Tanggal Presensi" autocomplete="off">
+                            <input type="text" value="{{ date("Y-m-d") }}" name="tanggal" id="tanggal" class="form-control" placeholder="Tanggal Presensi" autocomplete="off">
                         </div>
                     </div>
                 </div>
@@ -44,6 +44,7 @@
                                     <th>Jam Keluar</th>
                                     <th>Foto Keluar</th>
                                     <th>Keterangan</th>
+                                    <th>Lokasi</th>
                                 </tr>
                             </thead>
                             <tbody id="loadpresensi"></tbody>
@@ -55,6 +56,18 @@
     </div>
 </div>
 
+{{-- //Modal Lihat Lokasi Presensi --}}
+<div class="modal modal-blur fade" id="modal-tampilkanpeta" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Lokasi Presensi Personel</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="loadmap"></div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @push('myscript')
@@ -66,8 +79,8 @@
                 format: 'yyyy-mm-dd'
             });
 
-            $("#tanggal").change(function(e) {
-                var tanggal = $(this).val();
+            function loadpresensi() {
+                var tanggal = $("#tanggal").val();
                 $.ajax({
                     type: 'POST',
                     url: '/getpresensi',
@@ -79,8 +92,14 @@
                     success: function(respond) {
                         $("#loadpresensi").html(respond);
                     }
-                })
+                });
+            };
+
+            $("#tanggal").change(function(e) {
+                loadpresensi();
             });
+
+            loadpresensi();
         });
     </script>
 @endpush

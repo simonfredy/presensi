@@ -94,11 +94,11 @@
                 maxZoom: 19
             }).addTo(map);
             var marker = L.marker([position.coords.latitude, position.coords.longitude]).addTo(map);
-            var circle = L.circle([3.5569838678015455, 98.60434804209673], {
+            var circle = L.circle([3.570764, 98.649164], {
                 color: 'red',
                 fillColor: '#f03',
                 fillOpacity: 0.5,
-                radius: 20
+                radius: 30
             }).addTo(map);
         }
 
