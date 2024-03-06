@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Presensi {{ $karyawan->nama_lengkap }}</title>
+  <title>Rekap Presensi</title>
 
   <!-- Normalize or reset CSS with your favorite library -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
@@ -15,7 +15,7 @@
   <!-- Set also "landscape" if you need -->
   <style>
     @page {
-        size: A4
+        size: legal
     }
     h3 {
         font-family: Arial, Helvetica, sans-serif;
@@ -40,6 +40,7 @@
         border: 1px solid #000000;
         padding: 8px;
         background: #DBDBDB;
+        font-size: 10px;
     }
     .tabelpresensi tr td{
         border: 1px solid #000000;
@@ -55,7 +56,7 @@
 
 <!-- Set "A5", "A4" or "A3" for class name -->
 <!-- Set also "landscape" if you need -->
-<body class="A4">
+<body class="legal landscape">
     <?php
     function selisih($jam_masuk, $jam_keluar)
     {
@@ -89,101 +90,74 @@
         </tr>
         <tr>
             <td colspan="3">
-                <h3 style="text-align: center">LAPORAN PRESENSI PERIODE {{ Str::upper($namabulan[$bulan]) }} {{ $tahun }}</h3>
+                <h3 style="text-align: center;">REKAP PRESENSI PERIODE {{ Str::upper($namabulan[$bulan]) }} {{ $tahun }}</h3>
             </td>
         </tr>
     </table>
-    <table class="tabeldatakaryawan">
-        <tr>
-            <td rowspan="6">
-                @php
-                    $path = Storage::url('upload/karyawan/' . $karyawan->foto);
-                @endphp
-                <img src="{{ url($path) }}" class="fotoprofil" alt="Foto Profil">
-            </td>
-        </tr>
-        <tr>
-            <td>NIP/NRP</td>
-            <td>:</td>
-            <td>{{ $karyawan->nik }}</td>
-        </tr>
-        <tr>
-            <td>Nama Karyawan</td>
-            <td>:</td>
-            <td>{{ $karyawan->nama_lengkap }}</td>
-        </tr>
-        <tr>
-            <td>Jabatan</td>
-            <td>:</td>
-            <td>{{ $karyawan->jabatan }}</td>
-        </tr>
-        <tr>
-            <td>Departemen</td>
-            <td>:</td>
-            <td>{{ $karyawan->nama_dept }}</td>
-        </tr>
-        <tr>
-            <td>No. HP</td>
-            <td>:</td>
-            <td>{{ $karyawan->no_hp }}</td>
-        </tr>
-    </table>
+
     <table class="tabelpresensi">
         <tr>
-            <th>No.</th>
-            <th>Tanggal</th>
-            <th>Jam Masuk</th>
-            <th>Foto Masuk</th>
-            <th>Jam Pulang</th>
-            <th>Foto Pulang</th>
-            <th>Keterangan</th>
-            <th>Total Jam</th>
+            <th rowspan="2">No.</th>
+            <th rowspan="2">Nama</th>
+            <th colspan="31">Tanggal</th>
+            <th rowspan="2">Total <br>Hadir</th>
+            <th rowspan="2">Total <br>Telat</th>
         </tr>
-        @foreach ($presensi as $d)
-        @php
-            $path_in = Storage::url('upload/absensi/' . $d->foto_in);
-            $path_out = Storage::url('upload/absensi/' . $d->foto_out);
-            $jamterlambat = selisih('07:30:00', $d->jam_in);
-        @endphp
         <tr>
-            <
-            <td>{{ date("d-m-Y", strtotime($d->tgl_presensi)) }}</td>
-            <td>{{ $d->jam_in }}</td>
-            <td><img src="{{ url($path_in) }}" alt="Foto Masuk" class="fotopresensi"></td>
-            <td>{{ $d->jam_out != null ? $d->jam_out : 'Belum Presensi' }}</td>
-            <td>
-                @if ($d->jam_out != null)
-                    <img src="{{ url($path_out) }}" alt="Foto Keluar" class="fotopresensi">
-                @else
-                    Belum Foto Pulang
-                @endif
+            <?php
+            for($i = 1; $i <= 31; $i++)
+            {
+            ?>
+                <th>{{ $i }}</th>
+            <?php
+            }
+            ?>
+        </tr>
+        @foreach ($rekap as $d)
+        <tr>
+            <td style="text-align:center">{{ $loop->iteration }}</td>
+            <td>{{ $d->nama_lengkap }}</td>
 
-            </td>
-            <td>
-                @if ($d->jam_in > '07:30')
-                    Terlambat {{ $jamterlambat }}
-                @else
-                    Tepat Waktu
-                @endif
-            </td>
-            <td>
-                @if ($d->jam_out != null)
-                    @php
-                        $jmljamkerja = selisih($d->jam_in, $d->jam_out);
-                    @endphp
-                @else
-                    @php
-                        $jmljamkerja = 0;
-                    @endphp
-                @endif
-                {{ $jmljamkerja }}
-            </td>
+            <?php
+            $totalhadir = 0;
+            $totalterlambat = 0;
+            for($i = 1; $i <= 31; $i++)
+            {
+                $tgl = "tgl_" . $i;
+                if(empty($d->$tgl))
+                {
+                    $hadir = ['',''];
+                    $totalhadir += 0;
+                }
+                else
+                {
+                    $hadir = explode("-",$d->$tgl);
+                    $totalhadir += 1;
+                    if($hadir[0] > "07:30:00")
+                    {
+                        $totalterlambat += 1;
+                    }
+                }
+            ?>
+
+                <td>
+                    <span style="color:{{ $hadir[0] > "07:30:00" ? "red" : "" }}">{{ $hadir[0] }} </span><br>
+                    <span style="color:{{ $hadir[1] < "15:00:00" ? "red" : "" }}">{{ $hadir[0] }} </span><br>
+
+                </td>
+            <?php
+            }
+            ?>
+            <td style="text-align:center">{{ $totalhadir }}</td>
+            <td style="text-align:center">{{ $totalterlambat }}</td>
         </tr>
         @endforeach
     </table>
+
     <table width="100%" style="margin-top: 100px">
         <tr>
-            <td colspan="2" style="text-align: right">Medan, {{ date('d-m-Y') }}</td>
+            <td></td>
+            <td style="text-align: center">Medan, {{ date('d-m-Y') }}</td>
         </tr>
         <tr>
             <td style="text-align: center; vertical-align: bottom" height="100px">
