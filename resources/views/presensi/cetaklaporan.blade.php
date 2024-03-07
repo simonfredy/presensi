@@ -146,7 +146,7 @@
             $jamterlambat = selisih('07:30:00', $d->jam_in);
         @endphp
         <tr>
-            <
+            <td>{{ $loop->iteration }}</td>
             <td>{{ date("d-m-Y", strtotime($d->tgl_presensi)) }}</td>
             <td>{{ $d->jam_in }}</td>
             <td><img src="{{ url($path_in) }}" alt="Foto Masuk" class="fotopresensi"></td>

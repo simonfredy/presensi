@@ -16,7 +16,8 @@ class PresensiController extends Controller
         $hariini = date("Y-m-d");
         $nik = Auth::guard('karyawan')->user()->nik;
         $cek = DB::table('presensi')->where('tgl_presensi', $hariini)->where('nik', $nik)->count();
-        return view('presensi.create', compact('cek'));
+        $lok_kantor = DB::table('konfigurasi_lokasi')->where('id', 1)->first();
+        return view('presensi.create', compact('cek', 'lok_kantor'));
     }
 
     public function store(Request $request)
@@ -24,8 +25,10 @@ class PresensiController extends Controller
         $nik = Auth::guard('karyawan')->user()->nik;
         $tgl_presensi = date('Y-m-d');
         $jam = date('H:i:s');
-        $latitudekantor = 3.570764;
-        $longitudekantor = 98.649164;
+        $lok_kantor = DB::table('konfigurasi_lokasi')->where('id', 1)->first();
+        $lok = explode(",", $lok_kantor->lokasi_kantor);
+        $latitudekantor = $lok[0];
+        $longitudekantor = $lok[1];
         $lokasi = $request->lokasi;
         $lokasiuser = explode(",", $lokasi);
         $latitudeuser = $lokasiuser[0];
@@ -50,7 +53,7 @@ class PresensiController extends Controller
         $filename = $formatname.".png";
         $file = $folderpath . $filename;
 
-        if($radius > 30)
+        if($radius > $lok_kantor->radius)
         {
             echo "error|Maaf. Anda berada di luar radius. Jarak anda ".$radius." meter dari lingkungan kantor|radius";
         }
