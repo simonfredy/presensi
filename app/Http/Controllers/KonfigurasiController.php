@@ -34,4 +34,10 @@ class KonfigurasiController extends Controller
             return Redirect::back()->with(['success' => 'Data Gagal Diperbaharui']);
         }
     }
+
+    public function jamkerja()
+    {
+
+        return view('konfigurasi.jamkerja');
+    }
 }
