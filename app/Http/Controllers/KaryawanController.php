@@ -70,10 +70,13 @@ class KaryawanController extends Controller
                 return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
             }
         }
-        catch (\Exception $e) 
+        catch (\Exception $e)
         {
-            //dd($e);
-            return Redirect::back()->with(['warning' => 'Data Gagal Disimpan']);
+            if($e->getCode() == 23000)
+            {
+                $message = "Data dengan NIP/NRP " . $nik . " sudah ada";
+            }
+            return Redirect::back()->with(['warning' => 'Data Gagal Disimpan '.$message]);
         }
     }
 
@@ -126,13 +129,13 @@ class KaryawanController extends Controller
                 return Redirect::back()->with(['success' => 'Data Berhasil Diperbarui']);
             }
         }
-        catch (\Exception $e) 
+        catch (\Exception $e)
         {
             //dd($e);
             return Redirect::back()->with(['warning' => 'Data Gagal Diperbarui']);
         }
     }
-    
+
     public function delete($nik)
     {
         $delete = DB::table('karyawan')->where('nik', $nik)->delete();

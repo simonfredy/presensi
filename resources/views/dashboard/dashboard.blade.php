@@ -1,7 +1,22 @@
 @extends('layouts.presensi')
-
 @section('content')
+<style>
+    .logout {
+        position: absolute;
+        color: white;
+        font-size: 20px;
+        text-decoration: none;
+        right: 8px;
+    }
+    .logout:hover {
+        color: white;
+    }
+</style>
 <div class="section" id="user-section">
+    <a href="/proseslogout" class="logout">
+        Keluar
+        <ion-icon name="log-out-outline"></ion-icon>
+    </a>
     <div id="user-detail">
         <div class="avatar">
             @if (!empty(Auth::guard('karyawan')->user()->foto))
@@ -10,7 +25,7 @@
                 @endphp
                 <img src="{{ url($path) }}" alt="avatar" class="imaged w64" style="height: 60px">
             @else
-                <img src="{{ url('assets/img/sample/avatar/avatar1.jpg') }}" alt="avatar" class="imaged w64 rounded">
+                <img src="assets/img/sample/avatar/avatar1.jpg" alt="avatar" class="imaged w64 rounded">
             @endif
             </div>
         <div id="user-info">
