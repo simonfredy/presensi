@@ -140,7 +140,7 @@
       <div class="collapse navbar-collapse" id="sidebar-menu">
         <ul class="navbar-nav pt-lg-3">
           <li class="nav-item">
-            <a class="nav-link {{ request()->is('#') ? 'active' : '' }}" href="#" >
+            <a class="nav-link {{ request()->is('#') ? 'active' : '' }}" href="/panel/dashboardadmin" >
               <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l-2 0l9 -9l9 9l-2 0" /><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" /><path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" /></svg>
               </span>
@@ -150,7 +150,7 @@
             </a>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" {{ request()->is(['karyawan','departemen']) ? 'show' : '' }} href="#navbar-extra" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="{{ request()->is(['karyawan','departemen']) ? 'true' : '' }}" >
+            <a class="nav-link dropdown-toggle" {{ request()->is(['karyawan','departemen','cabang']) ? 'show' : '' }} href="#navbar-extra" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="{{ request()->is(['karyawan','departemen','cabang']) ? 'true' : '' }}" >
               <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/star -->
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-database" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 6m-8 0a8 3 0 1 0 16 0a8 3 0 1 0 -16 0" /><path d="M4 6v6a8 3 0 0 0 16 0v-6" /><path d="M4 12v6a8 3 0 0 0 16 0v-6" /></svg>
               </span>
@@ -158,7 +158,7 @@
                 Data Master
               </span>
             </a>
-            <div class="dropdown-menu {{ request()->is(['karyawan','departemen']) ? 'show' : '' }}">
+            <div class="dropdown-menu {{ request()->is(['karyawan','departemen','cabang']) ? 'show' : '' }}">
               <div class="dropdown-menu-columns">
                 <div class="dropdown-menu-column">
                   <a class="dropdown-item {{ request()->is(['karyawan']) ? 'active' : '' }}" href="/karyawan">
@@ -166,6 +166,9 @@
                   </a>
                   <a class="dropdown-item {{ request()->is(['departemen']) ? 'active' : '' }}" href="/departemen">
                     Data Departemen
+                  </a>
+                  <a class="dropdown-item {{ request()->is(['cabang']) ? 'active' : '' }}" href="/cabang">
+                    Lokasi Presensi
                   </a>
               </div>
             </div>

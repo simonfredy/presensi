@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CabangController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DepartemenController;
 use App\Http\Controllers\KaryawanController;
@@ -89,6 +90,13 @@ Route::middleware(['auth:user'])->group(function(){
     Route::get('/presensi/izinsakit', [PresensiController::class, 'izinsakit']);
     Route::post('/presensi/approveizinsakit', [PresensiController::class, 'approveizinsakit']);
     Route::get('/presensi/{id}/batalkanizinsakit', [PresensiController::class, 'batalkanizinsakit']);
+
+    //Multi Presensi - Buat kantor cabang/lokasi presensi
+    Route::get('/cabang', [CabangController::class, 'index']);
+    Route::post('/cabang/store', [CabangController::class, 'store']);
+    Route::post('/cabang/edit', [CabangController::class, 'edit']);
+    Route::post('/cabang/update', [CabangController::class, 'update']);
+    Route::post('/cabang/{kode_cabang}/delete', [CabangController::class, 'delete']);
 
     //Konfigurasi
     Route::get('/konfigurasi/lokasikantor', [KonfigurasiController::class, 'lokasikantor']);

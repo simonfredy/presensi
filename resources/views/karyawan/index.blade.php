@@ -85,6 +85,7 @@
                                             <th>Nama</th>
                                             <th>Jabatan</th>
                                             <th>Departemen</th>
+                                            <th>Bagian</th>
                                             <th>Nomor HP</th>
                                             <th>Foto</th>
                                             <th>Aksi</th>
@@ -101,6 +102,7 @@
                                                 <td>{{ $d->nama_lengkap }}</td>
                                                 <td>{{ $d->jabatan }}</td>
                                                 <td>{{ $d->nama_dept }}</td>
+                                                <td>{{ $d->kode_cabang }}</td>
                                                 <td>{{ $d->no_hp }}</td>
                                                 <td>
                                                     @if (empty($d->foto))
@@ -190,11 +192,21 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-12">
+                    <div class="col-12 mb-3">
                         <select name="kode_dept" id="kode_dept" class="form-select">
                             <option value="">Departemen</option>
                             @foreach ($departemen as $d)
                                 <option {{ Request('kode_dept') == $d->kode_dept ? 'selected' : '' }} value="{{ $d->kode_dept }}">{{ $d->nama_dept }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 mb-3">
+                        <select name="kode_cabang" id="kode_dept" class="form-select">
+                            <option value="">Bagian</option>
+                            @foreach ($cabang as $d)
+                                <option value="{{ $d->kode_cabang }}">{{ strtoupper($d->nama_cabang) }}</option>
                             @endforeach
                         </select>
                     </div>
